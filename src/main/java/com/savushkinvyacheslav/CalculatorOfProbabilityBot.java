@@ -94,8 +94,10 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
             else
                 preDiceSet = partsOfExpression[0].substring(0, partsOfExpression[0].lastIndexOf("-"));
         }
-        else
+        else {
             preDiceSet = partsOfExpression[0];
+            modifier = 0;
+        }
 
         DiceSet diceSet = new DiceSet(preDiceSet.split("[+]"));
 
