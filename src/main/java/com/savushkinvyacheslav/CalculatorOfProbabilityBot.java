@@ -52,12 +52,20 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
                 return;
             }
 
-            Pattern pattern = Pattern.compile("^((([1-9]*)[d])([468]|10|12|20|100)([+]?))+(|([+-])(\\d+))([>][=]\\d+)$");
-            Matcher matcher = pattern.matcher(text);
+            String diceSetRegex = "(((([1-9]*)[d])([468]|10|12|20|100)([+]?))+([+]\\d+)?)";
+            Pattern CalculateProbabilityPattern = Pattern.compile("^" + diceSetRegex + "(>=\\d+)$");
+            Pattern CompareTwoDiceSetsPattern = Pattern.compile("^" + diceSetRegex + "\\p{Blank}" + diceSetRegex + "$");
+            Matcher matcher = CalculateProbabilityPattern.matcher(text);
 
-            sendMsg(chatId, matcher.find() ?
-                    parseAndCount(text) + " %" :
-                    INCORRECT_DATA_MESSAGE);
+            if (matcher.find()) {
+                sendMsg(chatId, parseAndCount(text) + " %");
+                return;
+            }
+            matcher = CompareTwoDiceSetsPattern.matcher(text);
+            if (matcher.find())
+                sendMsg(chatId, makeComparingTable(text));
+            else
+                sendMsg(chatId, INCORRECT_DATA_MESSAGE);
         }
     }
 
@@ -76,33 +84,58 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
     private String parseAndCount(String expression) {
         String[] partsOfExpression = expression.split(">=");
         int boarder = Integer.parseInt(partsOfExpression[1]);
-        int modifier = 1;
-        String lastSlagaemoe;
-        String preDiceSet;
-
-        if (partsOfExpression[0].contains("-")) {
-            modifier = -1;
-            lastSlagaemoe = partsOfExpression[0].substring(partsOfExpression[0].lastIndexOf("-") + 1);
-        }
-        else
-            lastSlagaemoe = partsOfExpression[0].substring(partsOfExpression[0].lastIndexOf("+") + 1);
-
-        if (!lastSlagaemoe.contains("d")) {
-            modifier *= Integer.parseInt(lastSlagaemoe);
-            if (modifier >= 0)
-                preDiceSet = partsOfExpression[0].substring(0, partsOfExpression[0].lastIndexOf("+"));
-            else
-                preDiceSet = partsOfExpression[0].substring(0, partsOfExpression[0].lastIndexOf("-"));
-        }
-        else {
-            preDiceSet = partsOfExpression[0];
-            modifier = 0;
-        }
+        int modifier = parseModifier(partsOfExpression[0]);
+        String preDiceSet = prepareStringDiceSet(partsOfExpression[0], modifier == 0);
 
         DiceSet diceSet = new DiceSet(preDiceSet.split("[+]"));
 
         double result = diceSet.probabilityInPercents(diceSet.aboveOrEquals(boarder - modifier));
         return new DecimalFormat("#.##").format(result);
+    }
+
+    private String makeComparingTable(String expression) {
+        String[] expressions = expression.split("\\p{Blank}");
+        if (expressions.length != 2)
+            return INCORRECT_DATA_MESSAGE;
+
+        return createComparingTable(expressions[0], expressions[1]);
+    }
+
+    private int parseModifier(String expression) {
+        String lastTerm = expression.substring(expression.lastIndexOf("+") + 1);
+        if (lastTerm.contains("d"))
+            return 0;
+        else
+            return Integer.parseInt(lastTerm);
+    }
+
+    private String prepareStringDiceSet(String expression, boolean zeroModifier) {
+        return zeroModifier ? expression :
+                expression.substring(0, expression.lastIndexOf("+"));
+    }
+
+    private String createComparingTable(String expression1, String expression2) {
+        int modifier1 = parseModifier(expression1);
+        int modifier2 = parseModifier(expression2);
+        String stringDiceSet1 = prepareStringDiceSet(expression1, modifier1 == 0);
+        String stringDiceSet2 = prepareStringDiceSet(expression2, modifier2 == 0);
+        DiceSet ds1 = new DiceSet(stringDiceSet1.split("[+]"));
+        DiceSet ds2 = new DiceSet(stringDiceSet2.split("[+]"));
+
+        StringBuilder resultTable = new StringBuilder(String.format("| %-3s | %.8s, %% | %.8s, %% |\n", ">=", expression1, expression2));
+        int difficultyOfCheck = Math.min(ds1.minSumDiceValues() + modifier1, ds2.minSumDiceValues() + modifier2);
+        int n = Math.max(ds1.maxSumDiceValues(), ds2.maxSumDiceValues());
+
+        while (difficultyOfCheck <= n) {
+            double probabilityOfSuccess1 = ds1.probabilityInPercents(ds1.aboveOrEquals(difficultyOfCheck - modifier1));
+            double probabilityOfSuccess2 = ds2.probabilityInPercents(ds2.aboveOrEquals(difficultyOfCheck - modifier2));
+            String pos1 = String.format("%.2f", probabilityOfSuccess1);
+            String pos2 = String.format("%.2f", probabilityOfSuccess2);
+            resultTable.append(String.format("| %-3s | %11s | %11s |\n", "" + difficultyOfCheck, pos1, pos2));
+            difficultyOfCheck++;
+        }
+
+        return resultTable.toString();
     }
 
     @Override

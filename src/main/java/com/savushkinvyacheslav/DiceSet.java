@@ -26,7 +26,6 @@ public class DiceSet {
     }
 
     public Integer aboveOrEquals(Integer boarder) {
-        // поочередно перебираем каждое распределение и сравниваем с boarder если больше то прибавляем 1 к нужному числу.
         int result = 0;
         if (goodSet(boarder))
             result++;
@@ -34,6 +33,8 @@ public class DiceSet {
         while (nextSetExist())
             if (goodSet(boarder))
                 result++;
+
+        Arrays.fill(currDiceValues, 1);
 
         return result;
     }
@@ -44,6 +45,19 @@ public class DiceSet {
             allCombinations *= mdv;
 
         return (double) positiveExperiments / allCombinations * 100;
+    }
+
+    public int minSumDiceValues() {
+        return currDiceValues.length;
+    }
+
+    public int maxSumDiceValues() {
+        int result = 0;
+
+        for (int mdv : maxDiceValues)
+            result += mdv;
+
+        return result;
     }
 
     private boolean goodSet(int boarder) {
