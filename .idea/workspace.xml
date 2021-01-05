@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="719b8f51-1c54-45ce-986b-bf284bcf0d46" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/savushkinvyacheslav/CalculatorOfProbabilityBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/savushkinvyacheslav/CalculatorOfProbabilityBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/savushkinvyacheslav/DiceSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/savushkinvyacheslav/DiceSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/savushkinvyacheslav/CalculatorOfProbabilityBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/savushkinvyacheslav/CalculatorOfProbabilityBot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/savushkinvyacheslav/DiceSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/savushkinvyacheslav/DiceSet.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +75,8 @@
       <updated>1606469743640</updated>
       <workItem from="1609669206869" duration="7836000" />
       <workItem from="1609734598379" duration="6690000" />
+      <workItem from="1609855706378" duration="412000" />
+      <workItem from="1609856553733" duration="455000" />
     </task>
     <servers />
   </component>
