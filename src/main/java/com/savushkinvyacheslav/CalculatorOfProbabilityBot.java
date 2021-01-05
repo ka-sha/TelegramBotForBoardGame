@@ -145,6 +145,6 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "1473964699:AAE1zrBZgaBWkuFG42iwxFhs-G8McLexjR8";
+        return "1473964699:AAGKpHK6YeeUgb32YEVcTpZxCYvw7vvYVJU";
     }
 }
