@@ -57,12 +57,12 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
             Pattern CompareTwoDiceSetsPattern = Pattern.compile("^" + diceSetRegex + "\\p{Blank}" + diceSetRegex + "$");
             Matcher matcher = CalculateProbabilityPattern.matcher(text);
 
-            if (matcher.find()) {
+            if (!text.contains("+>") && matcher.find()) {
                 sendMsg(chatId, parseAndCount(text) + " %");
                 return;
             }
             matcher = CompareTwoDiceSetsPattern.matcher(text);
-            if (matcher.find())
+            if (!text.contains("+>") && matcher.find())
                 sendMsg(chatId, makeComparingTable(text));
             else
                 sendMsg(chatId, INCORRECT_DATA_MESSAGE);
@@ -81,7 +81,7 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
         }
     }
 
-    private String parseAndCount(String expression) {
+    public static String parseAndCount(String expression) {
         String[] partsOfExpression = expression.split(">=");
         int boarder = Integer.parseInt(partsOfExpression[1]);
         int modifier = parseModifier(partsOfExpression[0]);
@@ -101,7 +101,7 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
         return createComparingTable(expressions[0], expressions[1]);
     }
 
-    private int parseModifier(String expression) {
+    private static int parseModifier(String expression) {
         String lastTerm = expression.substring(expression.lastIndexOf("+") + 1);
         if (lastTerm.contains("d"))
             return 0;
@@ -109,7 +109,7 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingBot {
             return Integer.parseInt(lastTerm);
     }
 
-    private String prepareStringDiceSet(String expression, boolean zeroModifier) {
+    private static String prepareStringDiceSet(String expression, boolean zeroModifier) {
         return zeroModifier ? expression :
                 expression.substring(0, expression.lastIndexOf("+"));
     }
