@@ -1,18 +1,14 @@
 package com.savushkinvyacheslav;
 
-import com.savushkinvyacheslav.commands.HelpCommand;
-import com.savushkinvyacheslav.commands.StartCommand;
+import com.savushkinvyacheslav.commands.*;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.*;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.text.DecimalFormat;
 
 public class CalculatorOfProbabilityBot extends TelegramLongPollingCommandBot {
-
-    private static final String INCORRECT_DATA_MESSAGE = "Incorrect message entered" +
-            "\nType /help for more information";
 
     public CalculatorOfProbabilityBot() {
         super();
@@ -22,13 +18,28 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingCommandBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
-        SendMessage answer = new SendMessage();
-        answer.setText(update.getMessage().getText());
-        answer.setChatId(update.getMessage().getChatId().toString());
+        Message message = update.getMessage();
+
+        if(isValidMessageAnswer(message)) {
+            Long chatId = message.getChatId();
+            String text = message.getText();
+            String answer = AnswerFormatter.getAnswer(text);
+            sendAnswer(chatId, answer);
+        }
+    }
+
+    private boolean isValidMessageAnswer(Message message) {
+        return message != null && message.hasText();
+    }
+
+    private void sendAnswer(Long chatId, String answer) {
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId.toString());
+        message.setText(answer);
         try {
-            execute(answer);
+            execute(message);
         } catch (TelegramApiException e) {
-            System.out.println("gigi");
+            System.out.println("future log");
         }
     }
 
@@ -67,18 +78,6 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingCommandBot {
         }
     }*/
 
-    /*private void sendMsg(String chatId, String answer) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(answer);
-        try {
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public static String parseAndCount(String expression) {
         String[] partsOfExpression = expression.split(">=");
         int boarder = Integer.parseInt(partsOfExpression[1]);
@@ -94,7 +93,7 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingCommandBot {
     private String makeComparingTable(String expression) {
         String[] expressions = expression.split("\\p{Blank}");
         if (expressions.length != 2)
-            return INCORRECT_DATA_MESSAGE;
+            return "need to delete this";
 
         return createComparingTable(expressions[0], expressions[1]);
     }
