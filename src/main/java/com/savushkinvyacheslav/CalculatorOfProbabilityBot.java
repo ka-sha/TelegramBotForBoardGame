@@ -43,40 +43,10 @@ public class CalculatorOfProbabilityBot extends TelegramLongPollingCommandBot {
         }
     }
 
-    /*@Override
-    public void onUpdateReceived(Update update) {
-        Message message = update.getMessage();
-
-        if (message != null && message.hasText()) {
-            String text = message.getText();
-            String chatId = message.getChatId().toString();
-
-            if (text.equals("/start")) {
-                sendMsg(chatId, START_MESSAGE);
-                return;
-            }
-
-            if (text.equals("/help")) {
-                sendMsg(chatId, HELP_MESSAGE);
-                return;
-            }
-
-            String diceSetRegex = "(((([1-9]*)[d])([468]|10|12|20|100)([+]?))+([+]\\d+)?)";
-            Pattern CalculateProbabilityPattern = Pattern.compile("^" + diceSetRegex + "(>=\\d+)$");
-            Pattern CompareTwoDiceSetsPattern = Pattern.compile("^" + diceSetRegex + "\\p{Blank}" + diceSetRegex + "$");
-            Matcher matcher = CalculateProbabilityPattern.matcher(text);
-
-            if (!text.contains("+>") && matcher.find()) {
-                sendMsg(chatId, parseAndCount(text) + " %");
-                return;
-            }
-            matcher = CompareTwoDiceSetsPattern.matcher(text);
-            if (!text.contains("+>") && matcher.find())
-                sendMsg(chatId, makeComparingTable(text));
-            else
-                sendMsg(chatId, INCORRECT_DATA_MESSAGE);
-        }
-    }*/
+    /*String diceSetRegex = "(((([1-9]*)[d])([468]|10|12|20|100)([+]?))+([+]\\d+)?)";
+      Pattern CalculateProbabilityPattern = Pattern.compile("^" + diceSetRegex + "(>=\\d+)$");
+      Pattern CompareTwoDiceSetsPattern = Pattern.compile("^" + diceSetRegex + "\\p{Blank}" + diceSetRegex + "$");
+      Matcher matcher = CalculateProbabilityPattern.matcher(text);*/
 
     public static String parseAndCount(String expression) {
         String[] partsOfExpression = expression.split(">=");
