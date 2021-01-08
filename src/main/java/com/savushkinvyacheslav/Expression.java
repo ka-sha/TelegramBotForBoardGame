@@ -5,14 +5,14 @@ import java.util.regex.*;
 public class Expression {
 
     private final String expression;
-    private static final String diceSetRegex = "(((([1-9]*)[d])([468]|10|12|20|100)([+]?))+([+]\\\\d+)?)";
+    private static final String diceSetRegex = "(((([1-9]*)[d])([468]|10|12|20|100)([+]?))+([+]\\d+)?)";
 
     public Expression(String expression) {
         this.expression = expression;
     }
 
     public boolean isValidForCalculateProbability() {
-        Pattern calculateProbabilityRegex = Pattern.compile("^" + diceSetRegex + "(>=\\\\d+)$");
+        Pattern calculateProbabilityRegex = Pattern.compile("^" + diceSetRegex + "(>=\\d+)$");
         Matcher matcher = calculateProbabilityRegex.matcher(expression);
         return matcher.find() && noContainPlusOnLeftPartEnd();
     }
