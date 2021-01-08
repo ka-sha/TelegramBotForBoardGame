@@ -27,14 +27,6 @@ public class Expression {
         return !expression.contains("+>");
     }
 
-    public CheckExpression[] getCheckExpressionsForComparing() {
-        String[] strExpressions = expression.split("\\p{Blank}");
-        Expression e1 = new Expression(strExpressions[0]);
-        Expression e2 = new Expression(strExpressions[1]);
-        return new CheckExpression[]{e1.getCheckExpressionForCalculateProbability(),
-                e2.getCheckExpressionForCalculateProbability()};
-    }
-
     public CheckExpression getCheckExpressionForCalculateProbability() {
         DiceSet diceSet;
         int modifier;
@@ -63,17 +55,46 @@ public class Expression {
     private String lastTerm() {
         int lastPlus = expression.lastIndexOf("+");
         int aboveSymbolIndex = expression.indexOf(">");
-        return expression.substring(lastPlus + 1, aboveSymbolIndex);
+        return rightSubstring(lastPlus + 1, aboveSymbolIndex);
+        //return (aboveSymbolIndex == -1) ? expression.substring(lastPlus + 1) :
+                //expression.substring(lastPlus + 1, aboveSymbolIndex);
+    }
+
+    private String rightSubstring(int start, int end) {
+        return (end == -1) ? expression.substring(start) :
+                expression.substring(start, end);
     }
 
     private DiceSet parseDiceSet(String lastSymbol) {
         int lastSymbolIndex = expression.lastIndexOf(lastSymbol);
-        String strDiceSet = expression.substring(0, lastSymbolIndex);
+        String strDiceSet = rightSubstring(0, lastSymbolIndex);//(lastSymbolIndex == -1) ? expression : expression.substring(0, lastSymbolIndex);
         return new DiceSet(strDiceSet.split("[+]"));
     }
 
     private int parseModifier() {
         String modifier = lastTerm();
         return Integer.parseInt(modifier);
+    }
+
+    public CheckExpression[] getCheckExpressionsForComparing() {
+        String[] strExpressions = expression.split("\\p{Blank}");
+        Expression e1 = new Expression(strExpressions[0]);
+        Expression e2 = new Expression(strExpressions[1]);
+        return new CheckExpression[]{e1.getCheckExpressionWithOutDifficultyOfCheck(),
+                e2.getCheckExpressionWithOutDifficultyOfCheck()};
+    }
+
+    private CheckExpression getCheckExpressionWithOutDifficultyOfCheck() {
+        DiceSet diceSet;
+        int modifier;
+        int difficultyOfCheck = 1;
+        if (hasModifier()) {
+            diceSet = parseDiceSet("+");
+            modifier = parseModifier();
+        } else {
+            diceSet = parseDiceSet(">");
+            modifier = 0;
+        }
+        return new CheckExpression(diceSet, modifier, difficultyOfCheck);
     }
 }
