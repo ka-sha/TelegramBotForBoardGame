@@ -56,8 +56,6 @@ public class Expression {
         int lastPlus = expression.lastIndexOf("+");
         int aboveSymbolIndex = expression.indexOf(">");
         return rightSubstring(lastPlus + 1, aboveSymbolIndex);
-        //return (aboveSymbolIndex == -1) ? expression.substring(lastPlus + 1) :
-                //expression.substring(lastPlus + 1, aboveSymbolIndex);
     }
 
     private String rightSubstring(int start, int end) {
@@ -67,7 +65,7 @@ public class Expression {
 
     private DiceSet parseDiceSet(String lastSymbol) {
         int lastSymbolIndex = expression.lastIndexOf(lastSymbol);
-        String strDiceSet = rightSubstring(0, lastSymbolIndex);//(lastSymbolIndex == -1) ? expression : expression.substring(0, lastSymbolIndex);
+        String strDiceSet = rightSubstring(0, lastSymbolIndex);
         return new DiceSet(strDiceSet.split("[+]"));
     }
 
