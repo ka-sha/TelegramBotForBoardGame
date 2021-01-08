@@ -85,4 +85,10 @@ public class DiceSet {
             currDiceValues[j] = 1;
         return true;
     }
+
+    @Override
+    public String toString() {
+        //TODO: override this method
+        return super.toString();
+    }
 }
