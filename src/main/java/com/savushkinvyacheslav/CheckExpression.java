@@ -11,6 +11,21 @@ public class CheckExpression {
         this.difficultyOfCheck = difficultyOfCheck;
     }
 
+    public double calculateProbability() {
+        int positiveExperimentsAmount = diceSet.aboveOrEquals(difficultyOfCheck - modifier);
+        return diceSet.probabilityInPercents(positiveExperimentsAmount);
+    }
+
+    @Override
+    public String toString() {
+        return diceSet.toString() + concatModifier() + difficultyOfCheck;
+    }
+
+    private String concatModifier() {
+        return (modifier == 0) ? "" :
+                "+" + modifier + ">=";
+    }
+
     public DiceSet getDiceSet() {
         return diceSet;
     }
