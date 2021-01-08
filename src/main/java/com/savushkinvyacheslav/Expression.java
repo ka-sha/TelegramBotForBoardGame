@@ -44,6 +44,8 @@ public class Expression {
 
     private int parseDifficultyOfCheck() {
         int startOfDigit = expression.indexOf("=") + 1;
+        if (startOfDigit == 0)
+            return 1;
         String strDigit = expression.substring(startOfDigit);
         return Integer.parseInt(strDigit);
     }
@@ -78,21 +80,7 @@ public class Expression {
         String[] strExpressions = expression.split("\\p{Blank}");
         Expression e1 = new Expression(strExpressions[0]);
         Expression e2 = new Expression(strExpressions[1]);
-        return new CheckExpression[]{e1.getCheckExpressionWithOutDifficultyOfCheck(),
-                e2.getCheckExpressionWithOutDifficultyOfCheck()};
-    }
-
-    private CheckExpression getCheckExpressionWithOutDifficultyOfCheck() {
-        DiceSet diceSet;
-        int modifier;
-        int difficultyOfCheck = 1;
-        if (hasModifier()) {
-            diceSet = parseDiceSet("+");
-            modifier = parseModifier();
-        } else {
-            diceSet = parseDiceSet(">");
-            modifier = 0;
-        }
-        return new CheckExpression(diceSet, modifier, difficultyOfCheck);
+        return new CheckExpression[]{e1.getCheckExpressionForCalculateProbability(),
+                e2.getCheckExpressionForCalculateProbability()};
     }
 }
