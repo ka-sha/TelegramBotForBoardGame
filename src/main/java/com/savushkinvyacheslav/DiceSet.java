@@ -19,13 +19,14 @@ public class DiceSet {
 
             maxDiceValues = new Integer[maxDiceValuesList.size()];
             maxDiceValues = maxDiceValuesList.toArray(maxDiceValues);
+            Arrays.sort(maxDiceValues);
 
             currDiceValues = new Integer[maxDiceValues.length];
             Arrays.fill(currDiceValues, 1);
         }
     }
 
-    public Integer aboveOrEquals(Integer boarder) {
+    public Integer aboveOrEquals(int boarder) {
         int result = 0;
         if (goodSet(boarder))
             result++;
@@ -88,7 +89,25 @@ public class DiceSet {
 
     @Override
     public String toString() {
-        //TODO: override this method
-        return super.toString();
+        int amountOfDices = 1;
+        int edges = maxDiceValues[0];
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < maxDiceValues.length - 1; i++) {
+            if (maxDiceValues[i].equals(maxDiceValues[i + 1]))
+                amountOfDices++;
+            else {
+                result.append(buildPartOfDiceSet(amountOfDices, edges)).append("+");
+                amountOfDices = 1;
+                edges = maxDiceValues[i + 1];
+            }
+        }
+        result.append(buildPartOfDiceSet(amountOfDices, edges));
+
+        return result.toString();
+    }
+
+    private String buildPartOfDiceSet(int amountOfDices, int edges) {
+        return (amountOfDices == 1) ? "d" + edges : amountOfDices + "d" + edges;
     }
 }
