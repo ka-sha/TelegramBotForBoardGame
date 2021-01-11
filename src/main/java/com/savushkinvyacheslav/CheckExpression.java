@@ -12,8 +12,7 @@ public class CheckExpression {
     }
 
     public double calculateProbability() {
-        int positiveExperimentsAmount = diceSet.aboveOrEquals(difficultyOfCheck - modifier);
-        return diceSet.probabilityInPercents(positiveExperimentsAmount);
+        return diceSet.probabilityAboveOrEqualsInPercents(difficultyOfCheck - modifier);
     }
 
     @Override
@@ -28,22 +27,6 @@ public class CheckExpression {
 
     public DiceSet getDiceSet() {
         return diceSet;
-    }
-
-    public void setDiceSet(DiceSet diceSet) {
-        this.diceSet = diceSet;
-    }
-
-    public int getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(int modifier) {
-        this.modifier = modifier;
-    }
-
-    public int getDifficultyOfCheck() {
-        return difficultyOfCheck;
     }
 
     public void setDifficultyOfCheck(int difficultyOfCheck) {

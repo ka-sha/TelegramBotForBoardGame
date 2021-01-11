@@ -26,13 +26,17 @@ public class DiceSet {
         }
     }
 
-    public Integer aboveOrEquals(int boarder) {
+    public Double probabilityAboveOrEqualsInPercents(int border) {
+        return (double) aboveOrEquals(border) / countAllCombinations() * 100;
+    }
+
+    private Integer aboveOrEquals(int border) {
         int result = 0;
-        if (goodSet(boarder))
+        if (goodSet(border))
             result++;
 
         while (nextSetExist())
-            if (goodSet(boarder))
+            if (goodSet(border))
                 result++;
 
         Arrays.fill(currDiceValues, 1);
@@ -40,16 +44,11 @@ public class DiceSet {
         return result;
     }
 
-    public Double probabilityInPercents(int positiveExperiments) {
-        int allCombinations = 1;
-        for (Integer mdv : maxDiceValues)
-            allCombinations *= mdv;
-
-        return (double) positiveExperiments / allCombinations * 100;
-    }
-
-    public int minSumDiceValues() {
-        return currDiceValues.length;
+    private int countAllCombinations() {
+        int result = 1;
+        for (int mvd : maxDiceValues)
+            result *= mvd;
+        return result;
     }
 
     public int maxSumDiceValues() {
