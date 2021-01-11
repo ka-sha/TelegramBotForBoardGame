@@ -17,7 +17,7 @@ public class CheckExpression {
 
     @Override
     public String toString() {
-        return diceSet.toString() + concatModifier() + difficultyOfCheck;
+        return diceSet.toString() + "+" +  concatModifier() + ">=" + difficultyOfCheck;
     }
 
     private String concatModifier() {
@@ -27,6 +27,10 @@ public class CheckExpression {
 
     public DiceSet getDiceSet() {
         return diceSet;
+    }
+
+    public int getModifier() {
+        return modifier;
     }
 
     public void setDifficultyOfCheck(int difficultyOfCheck) {
