@@ -6,11 +6,15 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public abstract class ServiceCommand extends BotCommand {
+    protected static final String BOT_SKILLS = "The bot can:\n" +
+            "1) calculate the probability of a successful dice roll\n" +
+            "2) compare 2 dice sets to determine the best one for success";
+
     public ServiceCommand(String commandIdentifier, String description) {
         super(commandIdentifier, description);
     }
 
-    public void sendMessage(AbsSender absSender, Long chatId, String answer) {
+    protected void sendMessage(AbsSender absSender, Long chatId, String answer) {
         SendMessage message = new SendMessage();
         message.enableMarkdown(true);
         message.setChatId(chatId.toString());
