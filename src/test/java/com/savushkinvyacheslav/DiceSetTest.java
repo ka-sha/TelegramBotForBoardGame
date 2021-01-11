@@ -66,4 +66,9 @@ public class DiceSetTest {
         assertEquals("d4+d6+5d8+d10+5d12", new DiceSet(new String[]{"d4", "d6", "5d8", "d10", "5d12"}).toString());
         assertEquals("d4+d6+d8+8d10+8d12", new DiceSet(new String[]{"d4", "d6", "d8", "8d10", "8d12"}).toString());
     }
+
+    @Test
+    public void toStringSameDicesSeparateTest() {
+        assertEquals("2d12+2d4+5d8", new DiceSet(new String[]{"d12", "d4", "d12", "d4", "5d8"}).toString());
+    }
 }
