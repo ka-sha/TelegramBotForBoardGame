@@ -88,18 +88,20 @@ public class DiceSet {
 
     @Override
     public String toString() {
+        int currIndex = maxDiceValues.length - 1;
         int amountOfDices = 1;
-        int edges = maxDiceValues[0];
+        int edges = maxDiceValues[currIndex];
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < maxDiceValues.length - 1; i++) {
-            if (maxDiceValues[i].equals(maxDiceValues[i + 1]))
+        while (currIndex > 0) {
+            if (maxDiceValues[currIndex].equals(maxDiceValues[currIndex - 1]))
                 amountOfDices++;
             else {
                 result.append(buildPartOfDiceSet(amountOfDices, edges)).append("+");
                 amountOfDices = 1;
-                edges = maxDiceValues[i + 1];
+                edges = maxDiceValues[currIndex - 1];
             }
+            currIndex--;
         }
         result.append(buildPartOfDiceSet(amountOfDices, edges));
 
